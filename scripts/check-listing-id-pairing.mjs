@@ -85,6 +85,7 @@ const EXEMPT = new Map([
     ['reddit/user', 'rows are profile-attribute key/value pairs; reddit/read fetches a post, addressed by post id'],
     ['discord-app/search', 'desktop UI session — message ids are not extractable from the rendered DOM'],
     ['notion/search', 'Strategy.UI Quick Find — page ids are not exposed in the rendered DOM; agents navigate via Notion UI (Cmd+P), not by id round-trip'],
+    ['tieba/hot', 'hot rows are topic landing pages, not thread rows; tieba/read fetches a thread by numeric id'],
 ]);
 
 /** Columns whose name implies "this is an id you can pass to detail". */
@@ -94,21 +95,35 @@ const ID_COLUMN_PATTERNS = [
     /Id$/,
     /^short_id$/i,
     /^jk$/i,             // indeed
+    /^tid$/i,            // hupu / thread id
     /^bvid$/i,           // bilibili
     /^aid$/i,            // anime / bilibili av
     /^asin$/i,           // amazon
+    /^sku$/i,            // jd / retail product SKU
     /^isbn$/i,           // book sites
     /^doi$/i,            // arxiv / openreview
     /^slug$/i,           // dev.to / lobsters short slug
     /^hn_id$/i,
     /^username$/i,       // user-keyed detail (profile commands)
     /^handle$/i,
-    /^url$/i,            // last-resort: url is at least round-trippable into a goto
     /^uri$/i,            // bluesky AT URI (at://did:.../...)
 ];
 
-function isIdColumn(col) {
-    return ID_COLUMN_PATTERNS.some((re) => re.test(col));
+function isUrlDetailCommand(entry) {
+    const args = Array.isArray(entry.args) ? entry.args : [];
+    const primaryArg = args.find((arg) => arg?.positional || arg?.required) ?? args[0];
+    if (!primaryArg) return false;
+    const name = String(primaryArg.name ?? '').toLowerCase();
+    const help = String(primaryArg.help ?? '').toLowerCase();
+    return name === 'url' || name === 'url-or-id' || help.includes('url');
+}
+
+function isIdColumn(col, detailCommands) {
+    if (ID_COLUMN_PATTERNS.some((re) => re.test(col))) return true;
+    if (/^url$/i.test(col)) {
+        return detailCommands.some(isUrlDetailCommand);
+    }
+    return false;
 }
 
 function classify(name) {
@@ -153,7 +168,7 @@ function main() {
                 continue;
             }
             const columns = Array.isArray(entry.columns) ? entry.columns : [];
-            if (!columns.some(isIdColumn)) {
+            if (!columns.some((col) => isIdColumn(col, readDetail))) {
                 violations.push({
                     site,
                     name: entry.name,

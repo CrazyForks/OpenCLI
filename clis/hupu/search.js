@@ -38,7 +38,7 @@ cli({
             help: '排序方式: general/createtime/replytime/light/reply'
         }
     ],
-    columns: ['rank', 'title', 'author', 'replies', 'lights', 'forum', 'url'],
+    columns: ['rank', 'tid', 'title', 'author', 'replies', 'lights', 'forum', 'url'],
     func: async (page, kwargs) => {
         const { query, page: pageNum = 1, limit = 20, forum, sort = 'general' } = kwargs;
         const searchUrl = getHupuSearchUrl(query, pageNum, forum, sort);
@@ -48,6 +48,7 @@ cli({
         // 处理结果：清理HTML标签，解码HTML实体
         const processedResults = results.slice(0, Number(limit)).map((item, index) => ({
             rank: index + 1,
+            tid: String(item.id || ''),
             title: decodeHtmlEntities(stripHtml(item.title)),
             author: item.username || '未知用户',
             replies: item.replies || '0',

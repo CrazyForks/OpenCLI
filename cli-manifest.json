@@ -8701,6 +8701,7 @@
     ],
     "columns": [
       "rank",
+      "tid",
       "title",
       "url"
     ],
@@ -8885,6 +8886,7 @@
     ],
     "columns": [
       "rank",
+      "tid",
       "title",
       "author",
       "replies",

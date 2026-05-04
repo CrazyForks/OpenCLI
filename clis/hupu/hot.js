@@ -8,7 +8,7 @@ cli({
     args: [
         { name: 'limit', type: 'int', default: 20, help: 'Number of hot posts' },
     ],
-    columns: ['rank', 'title', 'url'],
+    columns: ['rank', 'tid', 'title', 'url'],
     pipeline: [
         { navigate: 'https://bbs.hupu.com/' },
         { evaluate: `(async () => {
@@ -33,6 +33,7 @@ cli({
 ` },
         { map: {
                 rank: '${{ index + 1 }}',
+                tid: '${{ item.tid }}',
                 title: '${{ item.title }}',
                 url: 'https://bbs.hupu.com/${{ item.tid }}.html',
             } },

@@ -20,7 +20,8 @@ That column is whatever the detail command expects:
 | Site | Listing | Detail | Round-trip column |
 |------|---------|--------|-------------------|
 | `hackernews` | `top` / `best` / `ask` / `jobs` / `show` / `new` | `read <id>` | `id` |
-| `lobsters` | `hot` / `recent` / `top` | `read <short_id>` | `short_id` |
+| `hupu` | `hot` / `search` | `detail <tid>` | `tid` |
+| `lobsters` | `hot` / `active` / `newest` / `tag` | `read <id>` | `id` (Lobsters short_id value) |
 | `arxiv` | `search` / `recent` | `paper <id>` | `id` |
 | `stackoverflow` | `hot` / `search` / `bounties` / `unanswered` | `read <id>` | `id` |
 | `openreview` | `search` / `venue` | `paper <id>` / `reviews <forum>` | `id` |
@@ -28,7 +29,7 @@ That column is whatever the detail command expects:
 | `bilibili` | `hot` | `video <bvid>` | `bvid` |
 | `reddit` | `hot` | `read <id>` | `id` |
 | `bluesky` | `user` | `thread <uri>` | `uri` |
-| `1688` | `search` | `detail <offer_id>` | `offer_id` |
+| `1688` | `search` | `item <url-or-offer-id>` | `offer_id` |
 | `tieba` | `search` | `read <id>` | `id` |
 
 ## Why this matters
@@ -55,12 +56,14 @@ these column names a valid round-trip handle:
 
 - Exact `id` / `short_id`
 - Anything ending in `_id` or `Id` (e.g. `offer_id`, `paperId`)
-- Domain-specific ids: `jk` (indeed), `bvid` / `aid` (bilibili),
-  `asin` (amazon), `isbn`, `doi`, `slug`
+- Domain-specific ids: `jk` (indeed), `tid` (thread id), `bvid` / `aid`
+  (bilibili), `sku` (retail product SKU), `asin` (amazon), `isbn`, `doi`,
+  `slug`
 - `username` / `handle` (only when the detail command keys off the user
   rather than a post)
-- `url` — last-resort fallback. The agent can pass the URL into a `goto`
-  but can't fan out into a detail call without further parsing.
+- `url` — only when the detail command's positional argument explicitly
+  accepts a URL (for example `read <url-or-id>` or `article <url>`). URL is
+  not a valid substitute when the detail command expects a site id.
 - `uri` — for sites whose canonical handle is a URI scheme (e.g.
   Bluesky's `at://did:.../app.bsky.feed.post/...`).
 
@@ -79,6 +82,8 @@ The rule does NOT fire on:
 - **AI-chat / agent-session listings** (`chatgpt-app ask`, `claude new`,
   `codex ask`, ...). The rows are conversation turns inside one session,
   not separately fetchable.
+- **Topic / landing-page listings** (`tieba hot`). Their rows point to a
+  topic landing page, not to a thread entity accepted by the detail command.
 - **Single-profile field listings** (`reddit user`, `lesswrong user`).
   Their shape is `[field, value]` — every row is an attribute of the
   same profile, addressed by the username arg. There is no per-row entity
