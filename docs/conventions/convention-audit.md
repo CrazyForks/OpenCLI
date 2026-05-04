@@ -44,13 +44,29 @@ violations and exemptions are understood.
 baseline mode. The baseline file is
 `scripts/silent-column-drop-baseline.json`.
 
-The gate fails only on new violations beyond that baseline. This lets the repo
+`npm run check:typed-error-lint` enforces the silent failure rules in baseline
+mode:
+
+- `silent-clamp`
+- `silent-empty-fallback`
+- `silent-sentinel`
+
+The baseline file is `scripts/typed-error-lint-baseline.json`.
+
+Each gate fails only on new violations beyond its baseline. This lets the repo
 adopt the invariant immediately while existing findings are cleaned up in
 separate sweep PRs.
 
-When a sweep fixes existing entries, update the baseline:
+When a sweep fixes existing silent-column-drop entries, update the baseline:
 
 ```bash
 npm run build
 node scripts/check-silent-column-drop.mjs --update-baseline
+```
+
+When a sweep fixes existing typed-error findings, update the baseline:
+
+```bash
+npm run build
+node scripts/check-typed-error-lint.mjs --update-baseline
 ```

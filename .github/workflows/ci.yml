@@ -65,6 +65,13 @@ jobs:
         if: runner.os == 'Linux'
         run: npm run check:silent-column-drop
 
+      # Guard: adapters should fail with typed errors instead of silently
+      # returning empty arrays, clamping user input, or inventing sentinel data.
+      # Existing findings are tracked in scripts/typed-error-lint-baseline.json.
+      - name: Check typed-error lint baseline
+        if: runner.os == 'Linux'
+        run: npm run check:typed-error-lint
+
   # ── Unit tests (vitest shard) ──
   # PR: ubuntu + Node 22 only (fast feedback, 2 jobs).
   # Push to main/dev: full matrix for cross-platform/cross-version coverage (12 jobs).
