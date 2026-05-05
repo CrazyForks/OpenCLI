@@ -118,7 +118,7 @@ columns: ['rank', 'bondCode', 'bondName', /* ... */ ],
 - `default` 必填（缺失的命令会拒绝启动）
 - `columns` 数组必须跟 `func` 返回的 object keys 完全对上，顺序也一致（决定表格列顺序）
 - 列名 camelCase，跟 `cli({...})` 其他 adapter 保持统一
-- **中间解析对象 key 不能跟 columns 任一项重叠** —— 否则 `silent-column-drop` audit 会把它当 row 候选误判。`{pid, html, start}` 这类中间结构改成 `{postId, body, offset}`，最后在 push row 时再 destructure aliasing 回 column 命名。背景：PR #1329 R1 codex-mini0 catch 的（[`clis/1point3acres/thread.js#L50-L65`](../../../clis/1point3acres/thread.js)）
+- **中间解析对象 key 不能跟 columns 任一项重叠** —— 否则 `silent-column-drop` audit 会把它当 row 候选误判。`{pid, html, start}` 这类中间结构改成 `{postId, body, offset}`，最后在 push row 时再 destructure aliasing 回 column 命名。背景：PR #1329 R1 codex-mini0 catch 的（[before](https://github.com/jackwener/OpenCLI/blob/384bcd6fdd93f3075bd2c835e82689c42bfe4b2f/clis/1point3acres/thread.js#L50-L63) → [after](../../../clis/1point3acres/thread.js#L50-L65)）
 
 ### 3. func — 主体
 
@@ -262,7 +262,7 @@ const data = await page.fetchJson(`${BASE}/api/list`, {
 });
 ```
 
-它固定 `credentials: 'include'`，带 timeout，HTTP 非 2xx / 非 JSON 会抛统一 `CliError`。
+它固定 `credentials: 'include'`，带 timeout，HTTP 非 2xx / 非 JSON 会抛统一 runtime error。adapter 里不用再手写 `page.evaluate(fetch(...))`；如果你需要额外包一层业务语义，按 [`typed-errors.md`](./typed-errors.md) 映射到 `CommandExecutionError` / `AuthRequiredError` / `EmptyResultError`。
 
 ### HTML 不走 browser fetch
 
