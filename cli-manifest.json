@@ -163,6 +163,341 @@
     "navigateBefore": false
   },
   {
+    "site": "1point3acres",
+    "name": "digest",
+    "description": "一亩三分地 精华帖（编辑推荐 / 加精）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "返回条数（默认 20）"
+      }
+    ],
+    "columns": [
+      "rank",
+      "tid",
+      "title",
+      "forum",
+      "author",
+      "replies",
+      "views",
+      "lastReplyTime",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/digest.js",
+    "sourceFile": "1point3acres/digest.js"
+  },
+  {
+    "site": "1point3acres",
+    "name": "forum",
+    "description": "浏览一亩三分地某个版块的帖子列表（按 fid）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "fid",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "版块 ID，例如 145（海外面经）、198（海外职位内推）、27（研究生申请）"
+      },
+      {
+        "name": "page",
+        "type": "int",
+        "default": 1,
+        "required": false,
+        "help": "页码（默认 1）"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "返回条数（默认 20）"
+      }
+    ],
+    "columns": [
+      "rank",
+      "tid",
+      "kind",
+      "title",
+      "author",
+      "replies",
+      "views",
+      "lastReplyTime",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/forum.js",
+    "sourceFile": "1point3acres/forum.js"
+  },
+  {
+    "site": "1point3acres",
+    "name": "forums",
+    "description": "一亩三分地 所有版块（fid + 版块名）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "filter",
+        "type": "string",
+        "default": "",
+        "required": false,
+        "help": "按版块名关键字过滤（子串匹配，中英文）"
+      }
+    ],
+    "columns": [
+      "fid",
+      "name",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/forums.js",
+    "sourceFile": "1point3acres/forums.js"
+  },
+  {
+    "site": "1point3acres",
+    "name": "hot",
+    "description": "一亩三分地 今日热门帖子（按热度排序，约 50 条）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "返回条数（默认 20，最多 ~50）"
+      }
+    ],
+    "columns": [
+      "rank",
+      "tid",
+      "title",
+      "forum",
+      "author",
+      "replies",
+      "views",
+      "lastReplyTime",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/hot.js",
+    "sourceFile": "1point3acres/hot.js"
+  },
+  {
+    "site": "1point3acres",
+    "name": "latest",
+    "description": "一亩三分地 最新发帖（按发帖时间倒序）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "返回条数（默认 20，最多 ~50）"
+      }
+    ],
+    "columns": [
+      "rank",
+      "tid",
+      "title",
+      "forum",
+      "author",
+      "replies",
+      "views",
+      "postTime",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/latest.js",
+    "sourceFile": "1point3acres/latest.js"
+  },
+  {
+    "site": "1point3acres",
+    "name": "notifications",
+    "description": "一亩三分地 站内通知（互动 / 点评 / @ 我；需要登录）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "kind",
+        "type": "string",
+        "default": "mypost",
+        "required": false,
+        "help": "通知类型：mypost（我的帖子） / interactive（互动） / system（系统） / app（应用）"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "返回条数"
+      }
+    ],
+    "columns": [
+      "index",
+      "from",
+      "summary",
+      "time",
+      "threadUrl"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/notifications.js",
+    "sourceFile": "1point3acres/notifications.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "1point3acres",
+    "name": "search",
+    "description": "一亩三分地 站内关键字搜索（需要登录）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "query",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "搜索关键字"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "返回条数（默认 20）"
+      },
+      {
+        "name": "fid",
+        "type": "string",
+        "default": "",
+        "required": false,
+        "help": "限定版块 ID（可选）"
+      }
+    ],
+    "columns": [
+      "rank",
+      "tid",
+      "title",
+      "forum",
+      "author",
+      "replies",
+      "views",
+      "postTime",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/search.js",
+    "sourceFile": "1point3acres/search.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "1point3acres",
+    "name": "thread",
+    "description": "一亩三分地 帖子详情 + 楼层（主楼 + 回复）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "tid",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "帖子 ID（数字，见 `hot`/`latest` 返回的 tid）"
+      },
+      {
+        "name": "page",
+        "type": "int",
+        "default": 1,
+        "required": false,
+        "help": "楼层分页页码（默认 1）"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 10,
+        "required": false,
+        "help": "返回楼层条数（默认 10，含主楼）"
+      },
+      {
+        "name": "contentLimit",
+        "type": "int",
+        "default": 400,
+        "required": false,
+        "help": "每楼正文截断长度（默认 400 字符）"
+      }
+    ],
+    "columns": [
+      "floor",
+      "pid",
+      "author",
+      "postTime",
+      "content",
+      "url"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/thread.js",
+    "sourceFile": "1point3acres/thread.js"
+  },
+  {
+    "site": "1point3acres",
+    "name": "user",
+    "description": "一亩三分地 用户空间（用户组 / 积分 / 大米 / 帖子数 等）",
+    "access": "read",
+    "domain": "www.1point3acres.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "who",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "用户名或 uid（纯数字按 uid 查，否则按用户名）"
+      }
+    ],
+    "columns": [
+      "uid",
+      "username",
+      "group",
+      "credits",
+      "rice",
+      "posts",
+      "threads",
+      "digests",
+      "registerTime",
+      "lastAccess",
+      "profileUrl"
+    ],
+    "type": "js",
+    "modulePath": "1point3acres/user.js",
+    "sourceFile": "1point3acres/user.js"
+  },
+  {
     "site": "36kr",
     "name": "article",
     "description": "获取36氪文章正文内容",
@@ -4432,6 +4767,45 @@
     "modulePath": "codex/send.js",
     "sourceFile": "codex/send.js",
     "navigateBefore": true
+  },
+  {
+    "site": "coingecko",
+    "name": "top",
+    "description": "按市值排序的加密货币行情（默认 USD）",
+    "access": "read",
+    "domain": "api.coingecko.com",
+    "strategy": "public",
+    "browser": false,
+    "args": [
+      {
+        "name": "currency",
+        "type": "string",
+        "default": "usd",
+        "required": false,
+        "help": "计价币种 (usd / cny / eur / jpy ...)"
+      },
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 10,
+        "required": false,
+        "help": "返回数量 (max 250)"
+      }
+    ],
+    "columns": [
+      "rank",
+      "symbol",
+      "name",
+      "price",
+      "change24hPct",
+      "marketCap",
+      "volume24h",
+      "high24h",
+      "low24h"
+    ],
+    "type": "js",
+    "modulePath": "coingecko/top.js",
+    "sourceFile": "coingecko/top.js"
   },
   {
     "site": "coupang",
@@ -14936,6 +15310,263 @@
     "modulePath": "quark/share-tree.js",
     "sourceFile": "quark/share-tree.js",
     "navigateBefore": "https://pan.quark.cn"
+  },
+  {
+    "site": "qwen",
+    "name": "ask",
+    "description": "Send a prompt to Qianwen and return the assistant reply",
+    "access": "write",
+    "domain": "www.qianwen.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "prompt",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Prompt to send to Qianwen"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "default": 120,
+        "required": false,
+        "help": "Max seconds to wait for the response"
+      },
+      {
+        "name": "new",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Start a new chat before sending"
+      },
+      {
+        "name": "think",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Enable 深度思考 (DeepThink)"
+      },
+      {
+        "name": "research",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Enable 深度研究 (DeepResearch)"
+      },
+      {
+        "name": "markdown",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Emit assistant reply as markdown"
+      }
+    ],
+    "columns": [
+      "Role",
+      "Text"
+    ],
+    "timeout": 240,
+    "type": "js",
+    "modulePath": "qwen/ask.js",
+    "sourceFile": "qwen/ask.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "qwen",
+    "name": "history",
+    "description": "List recent Qianwen conversations (requires login)",
+    "access": "read",
+    "domain": "www.qianwen.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "limit",
+        "type": "int",
+        "default": 20,
+        "required": false,
+        "help": "Max conversations to show"
+      }
+    ],
+    "columns": [
+      "Index",
+      "Title",
+      "Updated",
+      "Url"
+    ],
+    "type": "js",
+    "modulePath": "qwen/history.js",
+    "sourceFile": "qwen/history.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "qwen",
+    "name": "image",
+    "description": "Generate images with Qianwen (AI生图) and save them locally",
+    "access": "write",
+    "domain": "www.qianwen.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "prompt",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Image prompt to send"
+      },
+      {
+        "name": "op",
+        "type": "str",
+        "default": "~/Pictures/qianwen",
+        "required": false,
+        "help": "Output directory"
+      },
+      {
+        "name": "new",
+        "type": "boolean",
+        "default": true,
+        "required": false,
+        "help": "Start a new chat before generating (default: true)"
+      },
+      {
+        "name": "sd",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Skip download; only show the Qianwen link"
+      },
+      {
+        "name": "timeout",
+        "type": "int",
+        "default": 180,
+        "required": false,
+        "help": "Max seconds to wait for the image response"
+      }
+    ],
+    "columns": [
+      "Status",
+      "File",
+      "Link"
+    ],
+    "timeout": 300,
+    "type": "js",
+    "modulePath": "qwen/image.js",
+    "sourceFile": "qwen/image.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "qwen",
+    "name": "new",
+    "description": "Start a new conversation in Qianwen",
+    "access": "write",
+    "domain": "www.qianwen.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [],
+    "columns": [
+      "Status"
+    ],
+    "type": "js",
+    "modulePath": "qwen/new.js",
+    "sourceFile": "qwen/new.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "qwen",
+    "name": "read",
+    "description": "Read messages in the current Qianwen conversation",
+    "access": "read",
+    "domain": "www.qianwen.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "markdown",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Emit assistant replies as markdown"
+      }
+    ],
+    "columns": [
+      "Role",
+      "Text"
+    ],
+    "type": "js",
+    "modulePath": "qwen/read.js",
+    "sourceFile": "qwen/read.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "qwen",
+    "name": "send",
+    "description": "Fire-and-forget: send a prompt to Qianwen without waiting for the reply",
+    "access": "write",
+    "domain": "www.qianwen.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [
+      {
+        "name": "prompt",
+        "type": "str",
+        "required": true,
+        "positional": true,
+        "help": "Prompt to send to Qianwen"
+      },
+      {
+        "name": "new",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Start a new chat before sending"
+      },
+      {
+        "name": "think",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Enable 深度思考 (DeepThink)"
+      },
+      {
+        "name": "research",
+        "type": "boolean",
+        "default": false,
+        "required": false,
+        "help": "Enable 深度研究 (DeepResearch)"
+      }
+    ],
+    "columns": [
+      "Status",
+      "Prompt"
+    ],
+    "type": "js",
+    "modulePath": "qwen/send.js",
+    "sourceFile": "qwen/send.js",
+    "navigateBefore": false
+  },
+  {
+    "site": "qwen",
+    "name": "status",
+    "description": "Check Qianwen page availability, login state, current session and model",
+    "access": "read",
+    "domain": "www.qianwen.com",
+    "strategy": "cookie",
+    "browser": true,
+    "args": [],
+    "columns": [
+      "Status",
+      "Login",
+      "Model",
+      "SessionId",
+      "Url"
+    ],
+    "type": "js",
+    "modulePath": "qwen/status.js",
+    "sourceFile": "qwen/status.js",
+    "navigateBefore": false
   },
   {
     "site": "reddit",
