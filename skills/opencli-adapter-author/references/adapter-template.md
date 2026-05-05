@@ -258,7 +258,7 @@ cli({
 const data = await page.fetchJson(`${BASE}/api/list`, {
   method: 'POST',
   headers: { 'X-Requested-With': 'XMLHttpRequest' },
-  body: { page: 1, size: Number(args.limit) || 20 },
+  body: { page: 1, size: limit },
 });
 ```
 
