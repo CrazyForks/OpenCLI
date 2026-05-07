@@ -1281,14 +1281,6 @@
   },
   {
     "rule": "silent-sentinel",
-    "command": "twitter/reply",
-    "file": "clis/twitter/reply.js",
-    "line": 68,
-    "text": "throw new Error(`Unsupported remote image format \"${normalizedContentType || 'unknown'}\". ` +",
-    "occurrence": 0
-  },
-  {
-    "rule": "silent-sentinel",
     "command": "twitter/search",
     "file": "clis/twitter/search.js",
     "line": 156,

@@ -1,8 +1,8 @@
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
 import { extractMedia } from './shared.js';
+import { TWITTER_BEARER_TOKEN } from './utils.js';
 // ── Twitter GraphQL constants ──────────────────────────────────────────
-const BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
 const TWEET_DETAIL_QUERY_ID = 'nBS-WpgA6ZG0CyNHD517JQ';
 const FEATURES = {
     responsive_web_graphql_exclude_directive_enabled: true,
@@ -121,7 +121,7 @@ cli({
             throw new AuthRequiredError('x.com', 'Not logged into x.com (no ct0 cookie)');
         // Build auth headers in TypeScript
         const headers = JSON.stringify({
-            'Authorization': `Bearer ${decodeURIComponent(BEARER_TOKEN)}`,
+            'Authorization': `Bearer ${decodeURIComponent(TWITTER_BEARER_TOKEN)}`,
             'X-Csrf-Token': ct0,
             'X-Twitter-Auth-Type': 'OAuth2Session',
             'X-Twitter-Active-User': 'yes',

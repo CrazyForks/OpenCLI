@@ -1,6 +1,7 @@
 import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { resolveTwitterQueryId } from './shared.js';
+import { TWITTER_BEARER_TOKEN } from './utils.js';
 const TWEET_RESULT_BY_REST_ID_QUERY_ID = '7xflPyRiUxGVbJd4uWmbfg';
 cli({
     site: 'twitter',
@@ -57,7 +58,7 @@ cli({
         const ct0 = document.cookie.split(';').map(c=>c.trim()).find(c=>c.startsWith('ct0='))?.split('=')[1];
         if (!ct0) return {error: 'No ct0 cookie — not logged into x.com'};
 
-        const bearer = 'AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
+        const bearer = ${JSON.stringify(TWITTER_BEARER_TOKEN)};
         const headers = {
           'Authorization': 'Bearer ' + decodeURIComponent(bearer),
           'X-Csrf-Token': ct0,

@@ -1,8 +1,8 @@
 import { AuthRequiredError, CommandExecutionError } from '@jackwener/opencli/errors';
 import { cli, Strategy } from '@jackwener/opencli/registry';
 import { resolveTwitterQueryId, extractMedia } from './shared.js';
+import { TWITTER_BEARER_TOKEN } from './utils.js';
 // ── Twitter GraphQL constants ──────────────────────────────────────────
-const BEARER_TOKEN = 'AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
 const HOME_TIMELINE_QUERY_ID = 'c-CzHF1LboFilMpsx4ZCrQ';
 const HOME_LATEST_TIMELINE_QUERY_ID = 'BKB7oi212Fi7kQtCBGE4zA';
 // Endpoint config: for-you uses GET HomeTimeline, following uses POST HomeLatestTimeline
@@ -168,7 +168,7 @@ cli({
         const queryId = await resolveTwitterQueryId(page, endpoint, fallbackQueryId);
         // Build auth headers
         const headers = JSON.stringify({
-            Authorization: `Bearer ${decodeURIComponent(BEARER_TOKEN)}`,
+            Authorization: `Bearer ${decodeURIComponent(TWITTER_BEARER_TOKEN)}`,
             'X-Csrf-Token': ct0,
             'X-Twitter-Auth-Type': 'OAuth2Session',
             'X-Twitter-Active-User': 'yes',
