@@ -23,6 +23,7 @@ import {
 } from './dom-helpers.js';
 import {
   resolveTargetJs,
+  boundingRectResolvedJs,
   clickResolvedJs,
   typeResolvedJs,
   prepareNativeTypeResolvedJs,
@@ -238,23 +239,40 @@ export abstract class BasePage implements IPage {
     const resolved = await runResolve(this, ref, opts);
     const nativeScrolled = await this.tryCdpOnResolvedElement('DOM.scrollIntoViewIfNeeded');
 
-    // Phase 2: Execute click on resolved element
-    const result = await this.evaluate(clickResolvedJs({ skipScroll: nativeScrolled })) as
+    // Phase 2: Measure rect (no click) so we can pick the right click strategy.
+    // CDP `Input.dispatchMouseEvent` fires pointerdown/pointerup/mousedown/
+    // mouseup/click — Radix/MUI dropdown menus listen on the pointer/mouse
+    // events. `el.click()` only fires `click`, so libraries that rely on
+    // pointerdown to commit a Select option (Mercury Expense category, many
+    // shadcn/Radix popovers) silently no-op. Prefer CDP when we have a rect.
+    const rect = await this.evaluate(boundingRectResolvedJs({ skipScroll: nativeScrolled })) as
+      | { x: number; y: number; w: number; h: number; visible: boolean }
+      | null;
+
+    // CDP-primary path: real coordinates + nativeClick available.
+    if (rect && rect.visible) {
+      const cdpOk = await this.tryNativeClick(rect.x, rect.y);
+      if (cdpOk) return resolved;
+    }
+
+    // JS fallback: zero-area element, off-screen, or no CDP nativeClick.
+    // `el.click()` always works regardless of layout, so it's the safety net.
+    const jsResult = await this.evaluate(clickResolvedJs({ skipScroll: nativeScrolled })) as
       | string
       | { status: string; x?: number; y?: number; w?: number; h?: number; error?: string }
       | null;
 
-    if (typeof result === 'string' || result == null) return resolved;
+    if (typeof jsResult === 'string' || jsResult == null) return resolved;
+    if (jsResult.status === 'clicked') return resolved;
 
-    if (result.status === 'clicked') return resolved;
-
-    // JS click failed — try CDP native click if coordinates available
-    if (result.x != null && result.y != null) {
-      const success = await this.tryNativeClick(result.x, result.y);
+    // Last-resort: JS threw. If we now have coords (rect was missing earlier
+    // but the JS path could read one), try CDP one more time before giving up.
+    if (jsResult.x != null && jsResult.y != null) {
+      const success = await this.tryNativeClick(jsResult.x, jsResult.y);
       if (success) return resolved;
     }
 
-    throw new Error(`Click failed: ${result.error ?? 'JS click and CDP fallback both failed'}`);
+    throw new Error(`Click failed: ${jsResult.error ?? 'JS click and CDP fallback both failed'}`);
   }
 
   /** Uses native CDP click support when the concrete page exposes it. */

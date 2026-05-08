@@ -295,8 +295,40 @@ export function resolveTargetJs(ref: string, opts: ResolveOptions = {}): string 
 }
 
 /**
+ * Generate JS that scrolls + measures `__resolved` without clicking.
+ *
+ * The base click flow prefers CDP `Input.dispatchMouseEvent` (which fires the
+ * full `pointerdown/pointerup/mousedown/mouseup/click` chain Radix/MUI
+ * dropdowns rely on) and only falls back to `el.click()` when the rect is
+ * unusable. We therefore split rect-measurement out of `clickResolvedJs` so
+ * the CDP-primary path can run without ever calling `el.click()` first.
+ */
+export function boundingRectResolvedJs(opts: { skipScroll?: boolean } = {}): string {
+  const shouldScroll = opts.skipScroll ? 'false' : 'true';
+  return `
+    (() => {
+      const el = window.__resolved;
+      if (!el) throw new Error('No resolved element');
+      if (${shouldScroll}) el.scrollIntoView({ behavior: 'instant', block: 'center' });
+      const rect = el.getBoundingClientRect();
+      const w = Math.round(rect.width);
+      const h = Math.round(rect.height);
+      const x = Math.round(rect.left + rect.width / 2);
+      const y = Math.round(rect.top + rect.height / 2);
+      const visible = w > 0 && h > 0;
+      return { x, y, w, h, visible };
+    })()
+  `;
+}
+
+/**
  * Generate JS for click that uses the unified resolver.
  * Assumes resolveTargetJs has been called and __resolved is set.
+ *
+ * This path is the JS fallback — used when CDP `Input.dispatchMouseEvent`
+ * isn't available (no `nativeClick` exposed) or the element has no usable
+ * rect (zero area / off-screen). The CDP-primary path lives in
+ * `BasePage.click` and uses `boundingRectResolvedJs` instead.
  */
 export function clickResolvedJs(opts: { skipScroll?: boolean } = {}): string {
   const shouldScroll = opts.skipScroll ? 'false' : 'true';
