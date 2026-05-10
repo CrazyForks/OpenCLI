@@ -19147,7 +19147,10 @@
     "type": "js",
     "modulePath": "reddit/comment.js",
     "sourceFile": "reddit/comment.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19177,7 +19180,10 @@
     "type": "js",
     "modulePath": "reddit/frontpage.js",
     "sourceFile": "reddit/frontpage.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19246,7 +19252,10 @@
     "type": "js",
     "modulePath": "reddit/popular.js",
     "sourceFile": "reddit/popular.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19342,7 +19351,10 @@
     "type": "js",
     "modulePath": "reddit/save.js",
     "sourceFile": "reddit/save.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19371,7 +19383,10 @@
     "type": "js",
     "modulePath": "reddit/saved.js",
     "sourceFile": "reddit/saved.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19429,7 +19444,10 @@
     "type": "js",
     "modulePath": "reddit/search.js",
     "sourceFile": "reddit/search.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19479,7 +19497,10 @@
     "type": "js",
     "modulePath": "reddit/subreddit.js",
     "sourceFile": "reddit/subreddit.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19512,7 +19533,10 @@
     "type": "js",
     "modulePath": "reddit/subscribe.js",
     "sourceFile": "reddit/subscribe.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19545,7 +19569,10 @@
     "type": "js",
     "modulePath": "reddit/upvote.js",
     "sourceFile": "reddit/upvote.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19574,7 +19601,10 @@
     "type": "js",
     "modulePath": "reddit/upvoted.js",
     "sourceFile": "reddit/upvoted.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19600,7 +19630,10 @@
     "type": "js",
     "modulePath": "reddit/user.js",
     "sourceFile": "reddit/user.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19635,7 +19668,10 @@
     "type": "js",
     "modulePath": "reddit/user-comments.js",
     "sourceFile": "reddit/user-comments.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
@@ -19671,7 +19707,10 @@
     "type": "js",
     "modulePath": "reddit/user-posts.js",
     "sourceFile": "reddit/user-posts.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "rest-countries",

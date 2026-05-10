@@ -7,6 +7,7 @@ cli({
     domain: 'reddit.com',
     strategy: Strategy.COOKIE,
     browser: true,
+    browserSession: { reuse: 'site' },
     args: [
         { name: 'name', type: 'string', required: true, positional: true, help: 'Subreddit name (no `r/` prefix; e.g. `python`)' },
         {

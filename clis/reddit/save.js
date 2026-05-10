@@ -8,6 +8,7 @@ cli({
     domain: 'reddit.com',
     strategy: Strategy.COOKIE,
     browser: true,
+    browserSession: { reuse: 'site' },
     args: [
         { name: 'post-id', type: 'string', required: true, positional: true, help: 'Post ID (e.g. 1abc123) or fullname (t3_xxx)' },
         { name: 'undo', type: 'boolean', default: false, help: 'Unsave instead of save' },
