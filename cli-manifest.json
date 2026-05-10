@@ -19318,7 +19318,10 @@
     "type": "js",
     "modulePath": "reddit/read.js",
     "sourceFile": "reddit/read.js",
-    "navigateBefore": "https://reddit.com"
+    "navigateBefore": "https://reddit.com",
+    "browserSession": {
+      "reuse": "site"
+    }
   },
   {
     "site": "reddit",
