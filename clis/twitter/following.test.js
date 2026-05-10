@@ -205,8 +205,8 @@ function createFollowingPage(followingResponses, { ct0 = 'token', userLookup = {
     const page = {
         goto: vi.fn().mockResolvedValue(undefined),
         wait: vi.fn().mockResolvedValue(undefined),
+        getCookies: vi.fn(async () => (ct0 ? [{ name: 'ct0', value: ct0 }] : [])),
         evaluate: vi.fn(async (script) => {
-            if (script.includes('document.cookie')) return ct0;
             if (script.includes('operationName')) return null;
             if (script.includes('/UserByScreenName')) return userLookup;
             if (script.includes('/Following')) return followingResponses.shift() || followingPayload([], null);

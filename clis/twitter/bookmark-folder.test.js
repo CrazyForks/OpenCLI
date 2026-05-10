@@ -309,6 +309,7 @@ describe('twitter bookmark-folder command (registry)', () => {
         const page = {
             goto: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
+            getCookies: vi.fn().mockResolvedValue([]),
             evaluate: vi.fn().mockResolvedValue(null),
         };
         await expect(command.func(page, { 'folder-id': '12345', limit: 5 }))
@@ -321,14 +322,14 @@ describe('twitter bookmark-folder command (registry)', () => {
         const page = {
             goto: vi.fn().mockResolvedValue(undefined),
             wait: vi.fn().mockResolvedValue(undefined),
+            getCookies: vi.fn().mockResolvedValue([{ name: 'ct0', value: 'ct0-token' }]),
             evaluate: vi.fn()
-                .mockResolvedValueOnce('ct0-token')
                 .mockResolvedValueOnce('queryX')
                 .mockResolvedValueOnce({ data: { bookmark_timeline_v2: { timeline: { instructions: [] } } } }),
         };
         const result = await command.func(page, { 'folder-id': 'folder_AbC-123', limit: 5 });
         expect(result).toEqual([]);
-        const fetchScript = page.evaluate.mock.calls[2][0];
+        const fetchScript = page.evaluate.mock.calls[1][0];
         expect(decodeURIComponent(fetchScript)).toContain('"bookmark_collection_id":"folder_AbC-123"');
     });
 });

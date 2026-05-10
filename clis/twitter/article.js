@@ -51,12 +51,16 @@ cli({
         // Navigate to the tweet page for cookie context
         await page.goto(`https://x.com/i/status/${tweetId}`);
         await page.wait(3);
+        // Read CSRF token directly from the cookie store via CDP — zero page.evaluate round-trip
+        const cookies = await page.getCookies({ domain: '.x.com' });
+        const ct0 = cookies.find((c) => c.name === 'ct0')?.value || null;
+        if (!ct0)
+            throw new AuthRequiredError('x.com', 'Not logged into x.com (no ct0 cookie)');
         const queryId = await resolveTwitterQueryId(page, 'TweetResultByRestId', TWEET_RESULT_BY_REST_ID_QUERY_ID);
         const result = await page.evaluate(`
       async () => {
         const tweetId = "${tweetId}";
-        const ct0 = document.cookie.split(';').map(c=>c.trim()).find(c=>c.startsWith('ct0='))?.split('=')[1];
-        if (!ct0) return {error: 'No ct0 cookie — not logged into x.com'};
+        const ct0 = ${JSON.stringify(ct0)};
 
         const bearer = ${JSON.stringify(TWITTER_BEARER_TOKEN)};
         const headers = {
@@ -156,8 +160,6 @@ cli({
       }
     `);
         if (result?.error) {
-            if (String(result.error).includes('No ct0 cookie'))
-                throw new AuthRequiredError('x.com', result.error);
             throw new CommandExecutionError(result.error + (result.hint ? ` (${result.hint})` : ''));
         }
         return result || [];

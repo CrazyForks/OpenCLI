@@ -159,10 +159,9 @@ cli({
         // Navigate to x.com for cookie context
         await page.goto('https://x.com');
         await page.wait(3);
-        // Extract CSRF token
-        const ct0 = await page.evaluate(`() => {
-      return document.cookie.split(';').map(c=>c.trim()).find(c=>c.startsWith('ct0='))?.split('=')[1] || null;
-    }`);
+        // Read CSRF token directly from the cookie store via CDP — zero page.evaluate round-trip
+        const cookies = await page.getCookies({ domain: '.x.com' });
+        const ct0 = cookies.find((c) => c.name === 'ct0')?.value || null;
         if (!ct0)
             throw new AuthRequiredError('x.com', 'Not logged into x.com (no ct0 cookie)');
         // Dynamically resolve queryId for the selected endpoint
