@@ -43,7 +43,8 @@ export const askCommand = cli({
         } else {
             await ensureOnChatGPT(page);
         }
-        await page.wait(2);
+        // startNewChat / ensureOnChatGPT now wait for the composer selector
+        // after navigating, so the previous standalone 2 s settle is redundant.
         await ensureChatGPTComposer(page, 'ChatGPT ask requires a logged-in ChatGPT session with a visible composer.');
 
         const baseline = await getBubbleCount(page);
