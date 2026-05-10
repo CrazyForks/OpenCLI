@@ -1,10 +1,37 @@
 # Changelog
 
-## Unreleased
+## [1.7.16](https://github.com/jackwener/opencli/compare/v1.7.15...v1.7.16) (2026-05-11)
+
+Extension bumped to 1.0.10 (rename adapter-owned tab group `OpenCLI Automation` → `OpenCLI Adapter`). Performance and stability sweep across browser-backed adapters; new external CLI integrations (tg-cli, discord-cli, wx-cli).
+
+### Features
+
+* **openreview** — add `author` command for ID-explicit publication lookup. ([#1365](https://github.com/jackwener/opencli/issues/1365))
+* **external** — register `tg-cli`, `discord-cli`, and `wx-cli` as external CLI integrations. ([#1458](https://github.com/jackwener/opencli/issues/1458))
+
+### Bug Fixes
+
+* **xiaohongshu** — fall back to base64 upload when CDP `DOM.setFileInputFiles` returns `Not allowed` on creator center. ([#1374](https://github.com/jackwener/opencli/issues/1374))
+* **chatgpt** — switch to locale-stable send button selector so non-English UIs don't break send. ([#1354](https://github.com/jackwener/opencli/issues/1354))
+
+### Performance
+
+* **adapters** — hoist cookie reads to `page.getCookies` across Tier 1 (25 files), eliminating per-call CDP round trips. ([#1450](https://github.com/jackwener/opencli/issues/1450))
+* **twitter** — drop redundant `goto + wait` in adapter steps; framework auto pre-navigates. ([#1451](https://github.com/jackwener/opencli/issues/1451))
+* **twitter** — enable `browserSession.reuse: 'site'` on 17 read-only adapters so repeated reads share one tab. ([#1454](https://github.com/jackwener/opencli/issues/1454))
+* **reddit** — opt 13 browser-backed adapters into shared site-tab lease. ([#1455](https://github.com/jackwener/opencli/issues/1455))
+* **claude** — replace fixed-sleep waits with selector-based readiness on streaming flows. ([#1452](https://github.com/jackwener/opencli/issues/1452))
+* **deepseek** — replace fixed-sleep waits with selector-based readiness on streaming flows. ([#1449](https://github.com/jackwener/opencli/issues/1449))
+* **chatgpt** — replace fixed-sleep waits with selector-based readiness (D3). ([#1456](https://github.com/jackwener/opencli/issues/1456))
+
+### Refactor
+
+* **browser** — split interactive and automation windows so `opencli browser *` and adapter-driven background commands no longer share one Chrome window; tab groups are isolated by role.
 
 ### Internal
 
-* **extension 1.0.10** — rename the adapter-owned Chrome tab group from `OpenCLI Automation` to `OpenCLI Adapter`.
+* **extension 1.0.10** — rename the adapter-owned Chrome tab group from `OpenCLI Automation` to `OpenCLI Adapter`. ([#1457](https://github.com/jackwener/opencli/issues/1457))
+* **docs** — list `tg-cli`, `discord-cli`, `wx-cli` in External CLI README sections. ([#1459](https://github.com/jackwener/opencli/issues/1459))
 
 ## [1.7.15](https://github.com/jackwener/opencli/compare/v1.7.14...v1.7.15) (2026-05-10)
 
