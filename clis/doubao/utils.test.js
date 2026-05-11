@@ -157,6 +157,19 @@ describe('doubao receive strategy', () => {
         expect(turnsScript).toContain('[data-testid="message-block-container"]');
     });
 
+    it('includes the 2026-05 doubao DOM-refactor inner-item / top-item wrappers and the flow-markdown-body assistant fallback', () => {
+        const turnsScript = __test__.getTurnsScript();
+        // New wrappers added to itemSelectors so message roots resolve under the
+        // refactored DOM where the legacy item-kDun2N / union_message / message-block-container
+        // / data-message-id selectors no longer match.
+        expect(turnsScript).toContain('[class*="inner-item-"]');
+        expect(turnsScript).toContain('[class*="top-item-"]');
+        // Assistant fallback: post-refactor doubao no longer emits receive-message /
+        // bg-g-receive-msg-bubble markup. Only signal is .flow-markdown-body content
+        // container without send-bubble.
+        expect(turnsScript).toContain('.flow-markdown-body');
+    });
+
     it('extends transcript-noise cleanup for the current zh-CN chrome copy', () => {
         const transcriptScript = __test__.getTranscriptLinesScript();
         expect(transcriptScript).toContain('请仔细甄别');
