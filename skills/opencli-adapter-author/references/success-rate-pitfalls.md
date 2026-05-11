@@ -1,6 +1,6 @@
 # Success-Rate Pitfalls
 
-10 个**静默失败**（adapter 看起来能跑、verify 能过，但数据是错的）的坑。每条给：现象 → 根因 → 防御手段。
+11 个**静默失败**（adapter 看起来能跑、verify 能过，但数据是错的）的坑。每条给：现象 → 根因 → 防御手段。
 
 不是风格建议。每条都对应过一次真实翻车。
 
@@ -142,9 +142,11 @@
 **根因**：`aria-label` / `title` / `placeholder` / `alt` / `textContent` 都是页面的**用户可见文本**，被站点 i18n 框架翻译。用它们当 selector anchor 等于 "select by visible text"，locale 一动整个选择器就废。
 
 **防御**：
-- 优先用 locale-stable 标识：`id` / `class` / `data-testid` / `data-*` / `role`（开发者内部 ID，不被翻译）
-- 站点只暴露 `aria-label`（典型如 ChatGPT web）时，写 fallback list，至少 en + zh-CN：`'[aria-label="Send"], [aria-label="发送"]'`
-- commit 前 grep `aria-label=` / `placeholder=` 的硬编码字符串，确认每条都有兜底 locale
+- 优先用 locale-stable 标识：`data-testid` / `data-*` / 稳定 `id` / `class`。先确认不是 hash / A-B test 产物
+- `role` 不按 locale 翻译，但通常不唯一；只能当 semantic / scope filter，不能用裸 `[role="button"]` 当 primary
+- 站点只暴露 `aria-label`（典型如 ChatGPT web 某些 control）时，写 fallback list，至少 en + zh-CN：`'[aria-label="Send"], [aria-label="发送"]'`
+- commit 前 grep `aria-label=` / `placeholder=` / `title=` 的硬编码字符串，确认每条都有兜底 locale
+- 找不到 control 要 typed fail-fast（例如 `CommandExecutionError` / send-failed），不要把 selector miss 变成空 rows 或假成功
 - 详细 framework + 活例见 `adapter-template.md §Selector 稳定性`
 
 不要去给 framework 加 `--i18n` flag 自动展开——多一层 indirection 还要维护翻译字典，纯 over-engineering。
