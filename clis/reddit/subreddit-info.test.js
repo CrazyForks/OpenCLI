@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { getRegistry } from '@jackwener/opencli/registry';
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 import { parseSubredditName } from './subreddit-info.js';
 import './subreddit-info.js';
 
@@ -51,15 +51,29 @@ describe('reddit subreddit-info command', () => {
         expect(page.evaluate).not.toHaveBeenCalled();
     });
 
-    it('throws AuthRequiredError on 401/403', async () => {
-        await expect(command.func(makePage({ kind: 'auth', detail: 'login' }), { name: 'python' }))
-            .rejects.toBeInstanceOf(AuthRequiredError);
-    });
-
     it('throws EmptyResultError for missing / banned / private / quarantined subreddits', async () => {
         for (const detail of ['not found', 'banned', 'private', 'quarantined']) {
             await expect(command.func(makePage({ kind: 'missing', detail }), { name: 'python' }))
                 .rejects.toBeInstanceOf(EmptyResultError);
+        }
+    });
+
+    it('treats HTTP 401/403/404 about.json responses as inaccessible subreddit, not auth-required', async () => {
+        for (const status of [401, 403, 404]) {
+            const scriptResults = [];
+            const page = {
+                goto: vi.fn().mockResolvedValue(undefined),
+                evaluate: vi.fn(async (script) => {
+                    const result = await (new Function('fetch', `return (${script})`))(vi.fn(async () => ({
+                        status,
+                        ok: false,
+                    })));
+                    scriptResults.push(result);
+                    return result;
+                }),
+            };
+            await expect(command.func(page, { name: 'python' })).rejects.toBeInstanceOf(EmptyResultError);
+            expect(scriptResults[0]).toMatchObject({ kind: 'missing' });
         }
     });
 

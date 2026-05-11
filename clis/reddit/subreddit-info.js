@@ -1,4 +1,4 @@
-import { ArgumentError, AuthRequiredError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
+import { ArgumentError, CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 import { cli, Strategy } from '@jackwener/opencli/registry';
 
 // Reddit subreddit names: 3–21 chars, letters/digits/underscore, must start
@@ -48,11 +48,8 @@ cli({
       try {
         const sub = ${JSON.stringify(sub)};
         const res = await fetch('/r/' + encodeURIComponent(sub) + '/about.json?raw_json=1', { credentials: 'include' });
-        if (res.status === 401 || res.status === 403) {
-          return { kind: 'auth', detail: 'Reddit /r/' + sub + '/about.json returned HTTP ' + res.status };
-        }
-        if (res.status === 404) {
-          return { kind: 'missing', detail: 'Subreddit r/' + sub + ' was not found (404).' };
+        if (res.status === 401 || res.status === 403 || res.status === 404) {
+          return { kind: 'missing', detail: 'Subreddit r/' + sub + ' was not found or is not accessible (HTTP ' + res.status + ').' };
         }
         if (!res.ok) {
           return { kind: 'http', httpStatus: res.status, where: '/r/' + sub + '/about.json' };
@@ -77,9 +74,6 @@ cli({
       }
     })()`);
 
-        if (result?.kind === 'auth') {
-            throw new AuthRequiredError('reddit.com', result.detail);
-        }
         if (result?.kind === 'missing') {
             throw new EmptyResultError(result.detail);
         }
