@@ -19352,6 +19352,20 @@
         "default": 2000,
         "required": false,
         "help": "Max characters per comment body (min 100)"
+      },
+      {
+        "name": "expand-more",
+        "type": "bool",
+        "default": false,
+        "required": false,
+        "help": "Follow Reddit \"more comments\" stubs by calling /api/morechildren.json"
+      },
+      {
+        "name": "expand-rounds",
+        "type": "int",
+        "default": 2,
+        "required": false,
+        "help": "Max expansion passes when --expand-more is on (1–5; each round can fan out new \"more\" stubs)"
       }
     ],
     "columns": [
