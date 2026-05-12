@@ -145,5 +145,12 @@ if (getCompIdx !== -1) {
   process.exit(EXIT_CODES.SUCCESS);
 }
 
+// Rewrite `opencli browser <sessionname> <subcommand> ...` so commander (which
+// can't combine a parent positional with subcommand dispatch) sees the internal
+// `--session <name>` flag form. Idempotent on already-rewritten argv.
+const { rewriteBrowserArgv } = await import('./cli-argv-preprocess.js');
+const rewritten = rewriteBrowserArgv(process.argv.slice(2));
+process.argv.splice(2, process.argv.length - 2, ...rewritten);
+
 await emitHook('onStartup', { command: '__startup__', args: {} });
 runCli(BUILTIN_CLIS, USER_CLIS);

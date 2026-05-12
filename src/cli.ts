@@ -441,9 +441,12 @@ function getCommandOption(command: Command | undefined, option: string): unknown
 }
 
 function getBrowserSession(command?: Command): string {
+  // The CLI surface is `opencli browser <sessionname> <subcommand>`. main.ts rewrites
+  // argv to insert `--session <sessionname>` before commander parses it; this helper
+  // reads back the rewritten flag.
   const raw = getCommandOption(command, 'session');
   if (typeof raw === 'string' && raw.trim()) return raw.trim();
-  throw new Error('--session <name> is required for opencli browser commands');
+  throw new Error('<sessionname> is a required positional argument: opencli browser <sessionname> <command>');
 }
 
 function getBrowserContextId(command?: Command): string | undefined {
@@ -686,9 +689,20 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
 
   const browser = program
     .command('browser')
-    .requiredOption('--session <name>', 'Browser session to use (required)')
+    .requiredOption('--session <name>', 'Browser session name (required, normally passed as the <sessionname> positional)')
     .option('--window <mode>', 'Browser window mode: foreground or background')
-    .description('Browser control — navigate, click, type, extract, wait (no LLM needed)');
+    .description('Browser control — navigate, click, type, extract, wait (no LLM needed)')
+    .usage('<sessionname> <command> [options]')
+    .addHelpText('after', `
+Sessionname is a required positional that identifies the browser session every subcommand operates on.
+
+Examples:
+  $ opencli browser work open https://x.com
+  $ opencli browser work click 12
+  $ opencli browser work state
+  $ opencli browser work bind
+  $ opencli browser work unbind
+`);
   const originalBrowserDescription = browser.description();
 
   /**
@@ -811,8 +825,7 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
   }
 
   browser.command('bind')
-    .option('--session <name>', 'Browser session name to bind (required)')
-    .description('Bind the current Chrome tab/window to a browser session')
+    .description('Bind the current Chrome tab/window to the browser session named by <sessionname>')
     .action(async (optsOrCommand, maybeCommand?: Command) => {
       const command = optsOrCommand instanceof Command ? optsOrCommand : maybeCommand;
       const session = getBrowserSession(command);
@@ -841,8 +854,7 @@ export function createProgram(BUILTIN_CLIS: string, USER_CLIS: string): Command 
     });
 
   browser.command('unbind')
-    .option('--session <name>', 'Browser session name to detach (required)')
-    .description('Detach a bound browser session without closing the user tab/window')
+    .description('Detach the bound browser session named by <sessionname> without closing the user tab/window')
     .action(async (optsOrCommand, maybeCommand?: Command) => {
       const command = optsOrCommand instanceof Command ? optsOrCommand : maybeCommand;
       const session = getBrowserSession(command);
