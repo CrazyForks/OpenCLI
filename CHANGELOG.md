@@ -6,6 +6,10 @@
 
 * **notion** — remove the in-tree `clis/notion/` CDP-on-Desktop adapter (8 commands: status / search / read / new / write / sidebar / favorites / export). Notion has shipped an official CLI at <https://ntn.dev>, which is registered as a first-class external CLI in `external-clis.yaml`. Migration: install `ntn` from <https://ntn.dev> (`curl -fsSL https://ntn.dev | bash`), then use `opencli ntn <command>`. Auto-install is intentionally not configured because the official installer is a shell script while OpenCLI external installs run shell-free command strings. The official CLI uses the public Notion API rather than reverse-engineering the Desktop UI, so it survives Notion app updates and exposes a wider command surface (blocks / databases / properties / comments) than the reverse-engineered adapter could.
 
+### Bug Fixes
+
+* **external** — distinguish external CLI executable names from distribution/project names in root help. Built-in aliases such as `tg`, `discord`, and `wx` remain the callable `opencli <name> ...` entrypoints while help renders `tg(tg-cli)`, `discord(discord-cli)`, and `wx(wx-cli)` to show their package lineage.
+
 ## [1.7.19](https://github.com/jackwener/opencli/compare/v1.7.18...v1.7.19) (2026-05-14)
 
 Major hotfix + simplification batch. Extension bumped to 1.0.14. Node floor lowered to v20 so the long tail of Node v20–v21.6 users no longer crashes at module load. `opencli browser` user surface replaces required-flag `--session <name>` with a `<session>` positional. `page.evaluate(fn, ...args)` adds a type-safe alternative to the implicit auto-IIFE string form. Twitter cursor pagination no longer silently caps at ~500 items.

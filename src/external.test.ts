@@ -22,7 +22,7 @@ vi.mock('node:os', async () => {
   };
 });
 
-import { installExternalCli, parseCommand, type ExternalCliConfig } from './external.js';
+import { formatExternalCliLabel, installExternalCli, parseCommand, type ExternalCliConfig } from './external.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -58,6 +58,16 @@ describe('parseCommand', () => {
         if (command) expect(() => parseCommand(command)).not.toThrow();
       }
     }
+  });
+});
+
+describe('formatExternalCliLabel', () => {
+  it('shows the package name when the executable name differs', () => {
+    expect(formatExternalCliLabel({ name: 'wx', binary: 'wx', package: 'wx-cli' })).toBe('wx(wx-cli)');
+  });
+
+  it('keeps the label compact when package and name match', () => {
+    expect(formatExternalCliLabel({ name: 'docker', binary: 'docker', package: 'docker' })).toBe('docker');
   });
 });
 

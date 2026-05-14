@@ -336,9 +336,9 @@ OpenCLI 也可以作为你现有命令行工具的统一入口，负责发现、
 | **lark-cli** | 飞书 CLI — 消息、文档、日历、任务，200+ 命令 | `opencli lark-cli calendar +agenda` |
 | **dws** | 钉钉 CLI — 钉钉全套产品能力的跨平台命令行工具，支持人类和 AI Agent 使用 | `opencli dws msg send --to user "hello"` |
 | **wecom-cli** | 企业微信 CLI — 企业微信开放平台命令行工具，支持人类和 AI Agent 使用 | `opencli wecom-cli msg send --to user "hello"` |
-| **tg** | Telegram CLI — 基于 MTProto 的本地优先同步、搜索、导出，面向 AI Agent | `opencli tg search "AI news" -f json` |
-| **discord** | Discord CLI — 基于 SQLite 的本地优先同步、搜索、导出，面向 AI Agent | `opencli discord recent --channel general` |
-| **wx** | 微信本地数据 CLI — 会话、聊天记录、搜索、联系人、导出 | `opencli wx search "OpenCLI"` |
+| **tg(tg-cli)** | Telegram CLI — 基于 MTProto 的本地优先同步、搜索、导出，面向 AI Agent | `opencli tg search "AI news" -f json` |
+| **discord(discord-cli)** | Discord CLI — 基于 SQLite 的本地优先同步、搜索、导出，面向 AI Agent | `opencli discord recent --channel general` |
+| **wx(wx-cli)** | 微信本地数据 CLI — 会话、聊天记录、搜索、联系人、导出 | `opencli wx search "OpenCLI"` |
 | **vercel** | Vercel — 部署项目、管理域名、环境变量、日志 | `opencli vercel deploy --prod` |
 
 **零配置透传**：OpenCLI 会把你的输入原样转发给底层二进制，保留原生 stdout / stderr 行为。

@@ -63,6 +63,7 @@
 
 - name: tg
   binary: tg
+  package: tg-cli
   description: "Telegram CLI — local-first sync, search, export via MTProto for AI agents"
   homepage: "https://github.com/jackwener/tg-cli"
   tags: [telegram, messaging, search, export, ai-agent]
@@ -71,6 +72,7 @@
 
 - name: discord
   binary: discord
+  package: discord-cli
   description: "Discord CLI — local-first sync, search, export via SQLite for AI agents"
   homepage: "https://github.com/jackwener/discord-cli"
   tags: [discord, messaging, search, export, ai-agent]
@@ -79,6 +81,7 @@
 
 - name: wx
   binary: wx
+  package: wx-cli
   description: "WeChat local data CLI — sessions, messages, search, contacts, export for AI agents"
   homepage: "https://github.com/jackwener/wx-cli"
   tags: [wechat, messaging, search, export, ai-agent]

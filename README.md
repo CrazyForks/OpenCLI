@@ -294,9 +294,9 @@ OpenCLI acts as a universal hub for your existing command-line tools — unified
 | **lark-cli** | Lark/Feishu — messages, docs, calendar, tasks, 200+ commands | `opencli lark-cli calendar +agenda` |
 | **dws** | DingTalk — cross-platform CLI for DingTalk's full suite, designed for humans and AI agents | `opencli dws msg send --to user "hello"` |
 | **wecom-cli** | WeCom/企业微信 — CLI for WeCom open platform, for humans and AI agents | `opencli wecom-cli msg send --to user "hello"` |
-| **tg** | Telegram — local-first sync, search, and export via MTProto for AI agents | `opencli tg search "AI news" -f json` |
-| **discord** | Discord — local-first sync, search, and export via SQLite for AI agents | `opencli discord recent --channel general` |
-| **wx** | WeChat — query local WeChat data: sessions, messages, search, contacts, export | `opencli wx search "OpenCLI"` |
+| **tg(tg-cli)** | Telegram — local-first sync, search, and export via MTProto for AI agents | `opencli tg search "AI news" -f json` |
+| **discord(discord-cli)** | Discord — local-first sync, search, and export via SQLite for AI agents | `opencli discord recent --channel general` |
+| **wx(wx-cli)** | WeChat — query local WeChat data: sessions, messages, search, contacts, export | `opencli wx search "OpenCLI"` |
 | **vercel** | Vercel — deploy projects, manage domains, env vars, logs | `opencli vercel deploy --prod` |
 
 **Register your own** — add any local CLI so AI agents can discover it via `opencli list`:
