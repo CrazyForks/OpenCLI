@@ -140,6 +140,19 @@ Run `opencli list` for the live registry.
 | **[oeis](./browser/oeis.md)**                     | `search` `sequence`                                                                                                                            | 🌐 Public    |
 | **[wttr](./browser/wttr.md)**                     | `current` `forecast`                                                                                                                           | 🌐 Public    |
 | **[openfda](./browser/openfda.md)**               | `drug-label` `food-recall`                                                                                                                     | 🌐 Public    |
+| **[12306](./browser/12306.md)**                   | `stations` `trains` `train` `price` `me` `passengers` `orders`                                                                                 | 🔐 Browser   |
+| **[suno](./browser/suno.md)**                     | `generate` `status` `list` `download`                                                                                                          | 🔐 Browser   |
+| **[weread-official](./browser/weread-official.md)** | `search` `shelf` `book` `notes` `review` `readdata` `discover` `list-apis`                                                                  | 🌐 Public    |
+| **[qwen](./browser/qwen.md)**                     | `new` `ask` `send` `read` `status` `history` `detail` `image`                                                                                  | 🔐 Browser   |
+| **[deepseek](./browser/deepseek.md)**             | `new` `ask` `send` `read` `status` `history` `detail`                                                                                          | 🔐 Browser   |
+| **[yahoo](./browser/yahoo.md)**                   | `search`                                                                                                                                       | 🔐 Browser   |
+| **[1point3acres](./browser/1point3acres.md)**     | `hot` `latest` `forums` `forum` `thread` `digest` `search` `user` `notifications`                                                              | 🌐 Public    |
+| **[brave](./browser/brave.md)**                   | `search`                                                                                                                                       | 🔐 Browser   |
+| **[duckduckgo](./browser/duckduckgo.md)**         | `search` `suggest`                                                                                                                             | 🔐 Browser   |
+| **[cnki](./browser/cnki.md)**                     | `search`                                                                                                                                       | 🔐 Browser   |
+| **[flomo](./browser/flomo.md)**                   | `memos`                                                                                                                                        | 🔐 Browser   |
+| **[jianyu](./browser/jianyu.md)**                 | `search` `detail`                                                                                                                              | 🔐 Browser   |
+| **[taobao](./browser/taobao.md)**                 | `search` `detail` `reviews` `cart` `add-cart`                                                                                                  | 🔐 Browser   |
 
 ## Desktop Adapters
 
