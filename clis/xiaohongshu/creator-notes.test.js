@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 import { getRegistry } from '@jackwener/opencli/registry';
 import { __test__, parseCreatorNoteIdsFromHtml, parseCreatorNotesText } from './creator-notes.js';
 import './creator-notes.js';
@@ -241,6 +241,31 @@ describe('xiaohongshu creator-notes', () => {
         };
         expect(__test__.parseCaptureMapPayload({ session: 'site:xiaohongshu', data: JSON.stringify(captureMap) })).toEqual(captureMap);
         expect(__test__.parseCaptureMapPayload({ session: 'site:xiaohongshu', data: captureMap })).toEqual(captureMap);
+    });
+    it('does not fall back to partial DOM rows when captured total proves pagination is incomplete', async () => {
+        const cmd = getRegistry().get('xiaohongshu/creator-notes');
+        const captureMap = {
+            '/api/galaxy/creator/datacenter/note/analyze/list?type=0&page_size=10&page_num=1': {
+                ok: true,
+                body: JSON.stringify({
+                    data: {
+                        total: 25,
+                        note_infos: Array.from({ length: 10 }, (_, index) => ({
+                            id: String(index).padStart(24, '0'),
+                            title: `note ${index}`,
+                        })),
+                    },
+                }),
+            },
+        };
+        const page = createPageMock(undefined);
+        page.evaluate = vi.fn()
+            .mockResolvedValueOnce(undefined)
+            .mockResolvedValueOnce(undefined)
+            .mockResolvedValueOnce(JSON.stringify(captureMap))
+            .mockResolvedValueOnce(false);
+
+        await expect(cmd.func(page, { limit: 20 })).rejects.toBeInstanceOf(CommandExecutionError);
     });
     it('throws EmptyResultError when the creator account has no notes', async () => {
         const cmd = getRegistry().get('xiaohongshu/creator-notes');

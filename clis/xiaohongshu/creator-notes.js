@@ -8,7 +8,7 @@
  * Requires: logged into creator.xiaohongshu.com in Chrome.
  */
 import { cli, Strategy } from '@jackwener/opencli/registry';
-import { EmptyResultError } from '@jackwener/opencli/errors';
+import { CommandExecutionError, EmptyResultError } from '@jackwener/opencli/errors';
 const DATE_LINE_RE = /^发布于 (\d{4}年\d{2}月\d{2}日 \d{2}:\d{2})$/;
 const METRIC_LINE_RE = /^\d+$/;
 const VISIBILITY_LINE_RE = /可见$/;
@@ -324,7 +324,9 @@ async function fetchCreatorNotesByCapture(page, limit) {
         }
         if (!advanced) break;
     }
-    if (!isAnalyzeCaptureComplete(items, total, limit)) return [];
+    if (!isAnalyzeCaptureComplete(items, total, limit)) {
+        throw new CommandExecutionError(`xiaohongshu creator-notes: captured ${items.length} of ${Math.min(total, limit)} expected analyze rows; refusing partial results`);
+    }
     const notes = mapAnalyzeItems(items).slice(0, limit);
     const missingTitles = notes.filter((note) => !note.title).length;
     if (missingTitles > 0) {
@@ -380,7 +382,13 @@ async function fetchCreatorNotesByApi(page, limit) {
     return notes.slice(0, limit);
 }
 export async function fetchCreatorNotes(page, limit) {
-    let notes = await fetchCreatorNotesByCapture(page, limit).catch(() => []);
+    let notes = [];
+    try {
+        notes = await fetchCreatorNotesByCapture(page, limit);
+    }
+    catch (error) {
+        if (error instanceof CommandExecutionError) throw error;
+    }
     if (notes.length === 0) {
         notes = await fetchCreatorNotesByApi(page, limit);
     }
